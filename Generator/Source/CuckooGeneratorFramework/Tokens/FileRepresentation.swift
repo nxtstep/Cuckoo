@@ -35,7 +35,7 @@ internal extension Token {
             return self
         }
         let inheritedRepresentations: [Token] = typeToken.inheritedTypes
-                .flatMap { Self.findToken(forClassOrProtocol: $0.name, in: files) }
+                .flatMap { Self.findToken(forClassOrProtocol: $0.name.sanitized, in: files) }
                 .flatMap { $0.mergeInheritance(with: files) }
 
         // Merge super declarations
@@ -63,5 +63,14 @@ internal extension Token {
                 .filter { $0.isClassOrProtocolDefinition }
                 .map { $0 as! ContainerToken }
                 .first { $0.name == name }
+    }
+}
+
+extension String {
+    var sanitized: String {
+        guard let range = self.range(of: "<") else {
+            return self
+        }
+        return self.substring(to: range.lowerBound)
     }
 }
