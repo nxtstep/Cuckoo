@@ -33,4 +33,14 @@ protocol TestedProtocol {
     init()
 
     init(labelA a: String, _ b: String)
+
+    func protocolMethod() -> String
+
+    func methodWithParameter(_ param: String) -> String
+}
+
+extension TestedProtocol {
+    func protocolMethod() -> String {
+        return "a"
+    }
 }

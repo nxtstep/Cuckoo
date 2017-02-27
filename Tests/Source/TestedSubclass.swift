@@ -23,4 +23,12 @@ class TestedSubclass: TestedClass, TestedProtocol {
     required init(labelA a: String, _ b: String) {
         
     }
+
+    func methodWithParameter(_ param: String) -> String {
+        return "b"
+    }
+
+    func methodWithParameter(_ param: Int) -> String {
+        return "c"
+    }
 }
