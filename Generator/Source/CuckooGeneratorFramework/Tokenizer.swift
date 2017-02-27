@@ -55,7 +55,7 @@ public struct Tokenizer {
         let nameRange = extractRange(from: dictionary, offset: .NameOffset, length: .NameLength)
         let bodyRange = extractRange(from: dictionary, offset: .BodyOffset, length: .BodyLength)
         
-        let attributeOprional = (dictionary["key.attributes"] as? [Any])?.first(where: {($0 as? [String : String])?["key.attribute"] == "source.decl.attribute.optional"}) != nil
+        let attributeOptional = (dictionary["key.attributes"] as? [Any])?.first(where: {($0 as? [String : String])?["key.attribute"] == "source.decl.attribute.optional"}) != nil
         let accessibility = (dictionary[Key.Accessibility.rawValue] as? String).flatMap { Accessibility(rawValue: $0) }
         let type = dictionary[Key.TypeName.rawValue] as? String
         
@@ -156,7 +156,7 @@ public struct Tokenizer {
                     name: name,
                     accessibility: accessibility!,
                     returnSignature: returnSignature,
-                    isOptional: attributeOprional,
+                    isOptional: attributeOptional,
                     range: range!,
                     nameRange: nameRange!,
                     parameters: parameters)
@@ -190,8 +190,8 @@ public struct Tokenizer {
     private func tokenize(parameterLabel: String?, parameter: SourceKitRepresentable) -> MethodParameter? {
         guard let dictionary = parameter as? [String: SourceKitRepresentable] else { return nil }
         
-        let name = dictionary[Key.Name.rawValue] as? String ?? "name not set"
-        let kind = dictionary[Key.Kind.rawValue] as? String ?? "unknown type"
+        let name = dictionary[Key.Name.rawValue] as? String ?? Tokenizer.nameNotSet
+        let kind = dictionary[Key.Kind.rawValue] as? String ?? Tokenizer.unknownType
         let range = extractRange(from: dictionary, offset: .Offset, length: .Length)
         let nameRange = extractRange(from: dictionary, offset: .NameOffset, length: .NameLength)
         let type = dictionary[Key.TypeName.rawValue] as? String
